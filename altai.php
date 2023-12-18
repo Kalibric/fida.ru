@@ -116,7 +116,7 @@ session_start();
                       if (isset($_SESSION["ID"]) && getUser($conn, $_SESSION["ID"]))
                       {
                         ?>
-                        <a href="order.php">Заказать</a>
+                        <a href="order.php?ID=1">Заказать</a>
                         <?php
                       }
                       else

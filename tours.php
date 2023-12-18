@@ -1,5 +1,6 @@
 <?php
 require_once "db.php";
+require_once "Status.php";
 session_start();
 
 if (!isset($_SESSION["ID"]))
@@ -65,10 +66,10 @@ else
 <div class="container">
 
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-1">
 
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-9">
   <div class="login_form">
 
     <div class="row justify-content-center">
@@ -91,13 +92,49 @@ align-items: center;
           </div>
           <center style="padding-top: 30px;">
             <?php
-            $sql = $conn->prepare("SELECT * FROM TouristBookings WHERE UserID=:ID");
+            $sql = $conn->prepare("SELECT * FROM TouristBookings INNER JOIN Tours ON Tours.ID=TouristBookings.TourID WHERE UserID=:ID");
             $sql->execute([":ID" => $_SESSION["ID"]]);
             $result = $sql->fetchAll();
             if (count($result) == 0)
             {
               ?>
               <p>Вы ещё не заказывали туры :(</p>
+              <?php
+            }
+            else
+            {
+              ?>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Название тура</th>
+                    <th scope="col">Тип тура</th>
+                    <th scope="col">Цена(руб.)</th>
+                    <th scope="col">Запланированная дата</th>
+                    <th scope="col">Статус</th>
+                    <th scope="col">Связь</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  foreach ($result as $key => $value)
+                  {
+                    ?>
+                    <tr>
+                      <th scope="row"><?php echo $value["Title"] ?></th>
+                      <td><?php echo $value["isIndividual"] ? "Индивидуальный" : "Обычный" ?></td>
+                      <td><?php echo $value["Price"] ?></td>
+                      <td><?php echo $value["DateTour"] ?></td>
+                      <td><?php echo $status[$value["Status"]]["name"] ?></td>
+                      <td><?php echo "Ссылка" ?></td>
+                    </tr>
+                    <?php
+                  }
+                  ?>
+
+                </tbody>
+              </table>
+
               <?php
             }
             ?>
