@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+	<title>MOUNTAINS</title>
+    <link rel="stylesheet" type="text/css" href="avtoriz.css">
+	</head>
+  <body>
+  <form  method="POST" action="avtoriz.html" name="reg" >
+  <div class="imgcontainer">
+    <a href="index.html"><img src="images/avto.jpg" alt="Avatar" class="avatar"></a>
+  </div>
+
+  <div class="container">
+<p>
+    <p class="o">Фамилия
+<input id="f" type=text name="fam" class="tb" placeholder="только кириллица, пробелы и дефис">
+<input  name="vFam" class="vld"  readonly>
+</p>
+<p class="o">Имя
+<input type=text name="im" class="tb" placeholder="только кириллица, пробелы и дефис">
+<input  name="vIm" class="vld"  readonly >
+</p>
+<p class="o">Отчество
+<input type=text name="otch" class="tb" placeholder="только кириллица, пробелы и дефис">
+<input  name="vOtch" class="vld"  readonly >
+</p>
+<p class="o">Логин
+<input type="text" name="login" id="login" required class="tb" placeholder="только латинские буквы и точки">
+<input name="vLog" class="vld"  readonly  >
+</p>
+<p class="o">Пароль
+<input type="password" name="password" id="password" required  class="tb" placeholder="не менее 8 символов">
+<input  name="vPas" class="vld"  readonly >
+</p>
+<p class="o">Повтор пароля
+<input type=password name="pasp" class="tb" placeholder="не менее 8 символов">
+<input  name="vPasp" class="vld"  readonly>
+</p>
+<p>Создавая учетную запись, вы соглашаетесь с нашим <a href="#" style="color:dodgerblue">Условия и конфиденциальность</a>.</p>
+<br><br>
+<input type ="submit" OnClick="Proverka()" value="Зарегистрироваться" class="k"></input><br><br>
+<p>
+	У вас уже есть аккаунт?
+</p>
+<input type = button onclick="document.location='vhod.html'" value="Войти" class="vhod"></input>
+
+
+  </div>
+   <span id="wrong_pass_alert"></span>
+   <script  language="javascript">
+function textValid(txt, objMessage)
+    {
+		var lg = /^[А-Яа-я -]+$/;
+        if (txt=="")
+        {
+		document.getElementById("f").style.display = "visible";
+			objMessage.value = "Поле не заполнено";
+        }
+		else if (!lg.test(txt))
+		{
+			objMessage.value = "Неправильный ввод данных. Попробуйте еще раз";
+		}
+		else
+		{
+			return true;
+			objMessage.value = "";
+		}
+
+    }
+function loginValid(logi,objMessage)
+    {
+        var lg = /^[a-zA-Z.]+$/;
+		if (logi=="")
+        {
+			objMessage.value = "Поле не заполнено";
+        }
+        else if (!lg.test(logi))
+        {
+			objMessage.value = "Неправильный логин. Попробуйте еще раз";
+        }
+		else
+		{
+			return true;
+			objMessage.value = "";
+		}
+    }
+function passValid(pass1, pass2)
+    {
+		reg.vPas.value="";
+		reg.vPasp.value="";
+		var k=0;
+        if (pass1 == "" )
+        {
+			reg.vPas.value = "Поле не заполнено";
+			k++;
+			reg.pas.value="";
+			reg.pasp.value="";
+        }
+		if (pass1.length < 8)
+        {
+			reg.vPas.value = "Пароль короткий";
+			k++;
+			reg.pas.value="";
+			reg.pasp.value="";
+        }
+        if (pass2 == "" )
+        {
+			reg.vPasp.value = "Повтор пароля не заполнен";
+			k++;
+        }
+        if (pass1!=pass2)
+        {
+			reg.vPas.value = "Пароли не совпадают";
+			reg.vPasp.value = "Пароли не совпадают";
+			k++;
+			reg.pas.value="";
+			reg.pasp.value="";
+        }
+		if (k==0)
+		{
+			return true;
+		}
+
+    }
+function Proverka()
+    {
+		var Fam = textValid(document.reg.fam.value,document.reg.vFam);
+		var Im = textValid(document.reg.im.value,document.reg.vIm);
+		var Otch = textValid(document.reg.otch.value,document.reg.vOtch);
+		var Log = loginValid(document.reg.log.value,document.reg.vLog);
+		var Pas = passValid(reg.pas.value, reg.pasp.value);
+		if (Fam && Im && Otch && Log && Pas)
+		{
+			alert("Успешная регистрация!");
+			document.location.href ="main.html";
+		}
+
+    }
+</script>
+
+
+</form>
+  </body>
+  </html>

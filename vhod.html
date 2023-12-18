@@ -1,0 +1,164 @@
+<?php
+session_start(); // Инициализация сессии
+
+// Проверка, если пользователь уже авторизован, перенаправляем на страницу кабинета
+if (isset($_SESSION['login'])) {
+    header("Location: cabinet.php");
+    exit();
+}
+
+// Обработка формы при отправке
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Подключение к базе данных
+    $servername = "llocalhost";
+    $username = "root";
+    $password = "";
+    $dbname = "mountain";
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Проверка подключения к базе данных
+    if ($conn->connect_error) {
+        die("Ошибка подключения к базе данных: " . $conn->connect_error);
+    }
+
+    // Получение данных из формы
+    $login = trim($_POST['login']);
+    $password = trim($_POST['password']);
+
+    if (empty($login) || empty($password)) {
+        echo "Логин и пароль являются обязательными полями. Пожалуйста, заполните их.";
+    } else {
+        // Проверка соответствия логина и пароля
+        $stmt = $conn->prepare("SELECT Login FROM Baza WHERE Login = ? AND Password = ?");
+        $stmt->bind_param("ss", $login, $password);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            // Авторизация успешна, сохранение информации в сессии и перенаправление на страницу кабинета
+            $_SESSION['login'] = $login;
+            header("Location: cabinet.php");
+            exit();
+        } else {
+            echo "Неверный логин или пароль. Пожалуйста, попробуйте еще раз.";
+        }
+        // Закрытие подготовленного запроса
+        $stmt->close();
+    }
+
+    // Закрытие соединения с базой данных
+    $conn->close();
+}
+?>
+
+
+
+ <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MOUNTAIN</title>
+    <link rel="stylesheet" type="text/css" href="avtoriz.css">
+  </head>
+  <body>
+  
+  
+
+	
+  <form method="POST"  name="reg">
+  <div class="imgcontainer">
+	<a href="index.html"><img src="images/avto.jpg" alt="Avatar" class="avatar"></a>
+  </div>
+
+  <div class="container">
+<p>
+    
+<p class="o">Логин 
+<input type="text" name="login" id="login" required class="tb" placeholder="только латинские буквы и точки">
+<input name="vLog" class="vld"  readonly >
+</p>
+<p class="o">Пароль 
+<input type="password" name="password" id="password" required class="tb" placeholder="не менее 8 символов">
+<input  name="vPas" class="vld"  readonly >
+</p>
+
+<input type="submit" value="Войти" OnClick="Proverka()"  class="vho"></input>
+</div>
+
+
+   <span id="wrong_pass_alert"></span>
+   <script  language="javascript">
+
+function loginValid(logi,objMessage)
+    {
+        var lg = /^[a-zA-Z.]+$/;
+		if (logi=="")
+        {
+			objMessage.value = "Поле не заполнено";
+        }		
+        else if (!lg.test(logi))
+        {
+			objMessage.value = "Неправильный логин. Попробуйте еще раз";
+        }
+		else
+		{
+			return true;
+			objMessage.value = "";		
+		}
+    } 
+function passValid(pass1, pass2)
+    {
+		reg.vPas.value="";
+		reg.vPasp.value="";
+		var k=0;
+        if (pass1 == "" )
+        {
+			reg.vPas.value = "Поле не заполнено";
+			k++;
+			reg.pas.value="";
+			reg.pasp.value="";
+        }
+		if (pass1.length < 8)
+        {
+			reg.vPas.value = "Пароль короткий";  
+			k++;
+			reg.pas.value="";
+			reg.pasp.value="";
+        }
+        if (pass2 == "" )
+        {
+			reg.vPasp.value = "Повтор пароля не заполнен"; 
+			k++;
+        } 
+        if (pass1!=pass2)
+        {
+			reg.vPas.value = "Пароли не совпадают";
+			reg.vPasp.value = "Пароли не совпадают";	
+			k++;
+			reg.pas.value="";
+			reg.pasp.value="";
+        }
+		if (k==0)
+		{
+			return true;			
+		}
+
+    }	
+function Proverka()
+    {
+		
+		var Log = loginValid(document.reg.log.value,document.reg.vLog);
+		var Pas = passValid(reg.pas.value, reg.pasp.value);
+		if (Log && Pas)
+		{
+			alert("Успешная регистрация!");
+			document.location.href ="index.html";
+		}
+		
+    }
+</script>
+ 
+
+</form>
+  </body>
+  </html>
