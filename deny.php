@@ -20,7 +20,7 @@ else
   header("Location: login.php");
   exit();
 }
-if ($user["Status"] != 10)
+if ($user["Status"] != 10 && $user["Status"] != 5)
 {
   header("Location: login.php");
   exit();

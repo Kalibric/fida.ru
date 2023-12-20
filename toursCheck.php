@@ -20,7 +20,7 @@ else
   header("Location: login.php");
   exit();
 }
-if ($user["Status"] != 10)
+if ($user["Status"] != 10 && $user["Status"] != 5)
 {
   header("Location: login.php");
   exit();
@@ -72,11 +72,18 @@ if ($user["Status"] != 10)
               <p> Добро пожаловать,<br> <span style="color:blue"><?php echo $user["Familia"] . ' ' . $user["Name"] . '!' ?></span> </p>
               </center>
                        </div>
-                        <div class="col"><p><a href="logout.php"><span style="color:red;">Выйти</span> </a></p>
+                        <div class="col"><p><a href="cabinet.php"><span style="color:red;">Назад</span> </a></p>
                      </div>
                       </div>
                       <div class="cabinetHeader">
-                        <a href="admin.php">Пользователи</a>
+                        <?php 
+                        if ($user["Status"] == 10)
+                        {
+                          ?>
+                            <a href="admin.php">Пользователи</a>
+                          <?php
+                        }
+                        ?>
                         <a href="toursCheck.php" class="active">Одобрение туров</a>
                       </div>
 

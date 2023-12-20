@@ -120,6 +120,10 @@ else
               <th>Статус</th>
               <td><?php if ($user["Status"] == 1) {
     echo "<p>Обычный пользователь</p>";
+}
+elseif ($user["Status"] == 5) {
+  echo "<p>Сотрудник</p>";
+  echo '<p style=" padding: 6px"><a href="toursCheck.php" >Страница сотрудника</a></p>';
 } elseif ($user["Status"] == 10) {
     echo "<p>Администратор</p>";
 

@@ -32,6 +32,7 @@ if ($user["Status"] != 10)
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/admin.js"></script>
 </head>
 <body>
 <div class="container">
@@ -71,7 +72,7 @@ if ($user["Status"] != 10)
               <p> Добро пожаловать,<br> <span style="color:blue"><?php echo $user["Familia"] . ' ' . $user["Name"] . '!' ?></span> </p>
               </center>
                        </div>
-                        <div class="col"><p><a href="logout.php"><span style="color:red;">Выйти</span> </a></p>
+                        <div class="col"><p><a href="cabinet.php"><span style="color:red;">Назад</span> </a></p>
                      </div>
                       </div>
                       <div class="cabinetHeader">
@@ -94,10 +95,21 @@ if ($user["Status"] != 10)
                  {
                    $editText = $value['Status'] == 10 ? 'Сделать пользователем' : 'Сделать администратором';
                    $editQuery = $value['Status'] == 10 ? 'makeUser' : 'makeAdmin';
+                   $userselected = $value['Status'] == 1 ? 'selected' : '';
+                   $staffselected = $value['Status'] == 5 ? 'selected' : '';
+                   $adminselected = $value['Status'] == 10 ? 'selected' : '';
+
                    echo "<tr style='text-align: center; padding: 2 '>";
                    echo "<td style='text-align: center; font-size:10pt; padding: 0.5rem'>" . $value['Login'] . "</td>";
                    echo "<td style='text-align: center; font-size:10pt; padding: 0.5rem'>" . $value['Status'] . "</td>";
-                   echo "<td style='text-align: center; font-size:10pt; padding: 0.5rem'><a href='./editUser.php?ID=" . $value['ID'] . "&edit=" . $editQuery . "'>" . $editText . "</a></td>";
+                  //  echo "<td style='text-align: center; font-size:10pt; padding: 0.5rem'><a href='./editUser.php?ID=" . $value['ID'] . "&edit=" . $editQuery . "'>" . $editText . "</a></td>";
+                   echo "<td style='text-align: center; font-size:10pt; padding: 0.5rem'><div class='form-group'>
+                   <select class='form-control-sm' id='SelectStatus' userID='{$value['ID']}'>
+                     <option value='user' $userselected>Пользователь</option>
+                     <option value='staff' $staffselected>Сотрудник</option>
+                     <option value='admin' $adminselected>Администратор</option>
+                   </select>
+                 </div></td>";
                    echo "<td style='text-align: center; font-size:10pt; padding:0.5rem'><a href='./deleteUser.php?ID=" . $value['ID'] . "'>Удалить</a></td>";
                    echo "</tr>";
                  }
@@ -110,7 +122,7 @@ if ($user["Status"] != 10)
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </body>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
 </html>

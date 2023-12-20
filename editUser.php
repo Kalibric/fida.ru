@@ -4,7 +4,10 @@ session_start();
 
 if (!isset($_SESSION["ID"]))
 {
-  header("Location: login.php");
+  exit();
+}
+elseif (!isset($_POST["id"]) || !$_POST["status"])
+{
   exit();
 }
 
@@ -15,16 +18,30 @@ if ($user)
 }
 else
 {
-  session_destroy();
-  header("Location: login.php");
   exit();
 }
 
 if (getUser($conn, $_SESSION["ID"])["Status"] == 10)
 {
-  $user = getUser($conn, $_GET["ID"]);
+  switch ($_POST["status"]) {
+    case 'user':
+      $setstatus = 1;
+      break;
+    
+    case 'staff':
+      $setstatus = 5;
+      break;
+
+    case 'admin':
+      $setstatus = 10;
+      break;
+    
+    default:
+      exit();
+  }
+  $user = getUser($conn, $_POST["id"]);
   $sql = $conn->prepare("UPDATE Baza SET Status=:status WHERE ID=:id LIMIT 1");
-  $sql->execute([":id" => $_GET["ID"], ":status" => $user["Status"] == 1 ? 10 : 1]);
+  $sql->execute([":id" => $_POST["id"], ":status" => $setstatus]);
   if ($sql->rowCount() > 0)
   {
     echo '
@@ -37,6 +54,4 @@ if (getUser($conn, $_SESSION["ID"])["Status"] == 10)
   else
     echo "0 строк задето";
 }
-else
-  header("Location: admin.php");
 ?>
