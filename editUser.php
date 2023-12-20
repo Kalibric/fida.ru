@@ -1,26 +1,42 @@
 <?php
 require_once "db.php";
+session_start();
 
-if (!isset($_SESSION["login"]))
+if (!isset($_SESSION["ID"]))
 {
   header("Location: login.php");
   exit();
 }
 
-$login = $_SESSION['login'];
-if (getStatus($conn, $login) == 10)
+$user = getUser($conn, $_SESSION["ID"]);
+if ($user)
 {
-  $sql = $conn->prepare("UPDATE Baza SET Status=:stats WHERE ID=:id LIMIT 1");
-  $sql->execute([":id" => $_GET["id"]]);
+  $_SESSION["status"] = $user["status"];
+}
+else
+{
+  session_destroy();
+  header("Location: login.php");
+  exit();
+}
+
+if (getUser($conn, $_SESSION["ID"])["Status"] == 10)
+{
+  $user = getUser($conn, $_GET["ID"]);
+  $sql = $conn->prepare("UPDATE Baza SET Status=:status WHERE ID=:id LIMIT 1");
+  $sql->execute([":id" => $_GET["ID"], ":status" => $user["Status"] == 1 ? 10 : 1]);
   if ($sql->rowCount() > 0)
+  {
     echo '
         <script>
-          alert("Редактирование прошло успешно!")
+          alert("Пользователь успешно удален!")
         </script>
         ';
+    header("Location: admin.php");
+  }
   else
     echo "0 строк задето";
 }
 else
-  header("Location: index.html");
+  header("Location: admin.php");
 ?>

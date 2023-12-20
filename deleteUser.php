@@ -1,17 +1,29 @@
 <?php
 require_once "db.php";
+session_start();
 
-if (!isset($_SESSION["login"]))
+if (!isset($_SESSION["ID"]))
 {
   header("Location: login.php");
   exit();
 }
 
-$login = $_SESSION['login'];
-if (getStatus($conn, $login) == 10)
+$user = getUser($conn, $_SESSION["ID"]);
+if ($user)
+{
+  $_SESSION["status"] = $user["status"];
+}
+else
+{
+  session_destroy();
+  header("Location: login.php");
+  exit();
+}
+
+if (getUser($conn, $_SESSION["ID"])["Status"] == 10)
 {
   $sql = $conn->prepare("DELETE FROM Baza WHERE ID=:id LIMIT 1");
-  $sql->execute([":id" => $_GET["id"]]);
+  $sql->execute([":id" => $_GET["ID"]]);
   if ($sql->rowCount() > 0)
   {
     echo '
@@ -19,11 +31,11 @@ if (getStatus($conn, $login) == 10)
           alert("Пользователь успешно удален!")
         </script>
         ';
-    //exit("<meta http-equiv='refresh' content='1; url=./admin.php'>");
+    header("Location: admin.php");
   }
   else
     echo "0 строк задето";
 }
 else
-  header("Location: index.html");
+  header("Location: admin.php");
 ?>

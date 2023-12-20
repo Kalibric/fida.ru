@@ -33,9 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
       }
       else
       {
-         $sql = $conn->prepare("INSERT INTO TouristBookings (UserID, TourID, TourPrice, IsIndividual, DateTour) VALUES (:userID, :tourID, :price, :isIndividual, :dateTour)");
-         $sql = $sql->execute([":userID" => $_SESSION["ID"], ":tourID" => $_POST["ID"], ":price" => $result["Price"], ":isIndividual" => 0, ":dateTour" => $_POST["date"]]);
-         if ($sql)
+         $sql = $conn->prepare("INSERT INTO TouristBookings (UserID, TourID, Price, IsIndividual, DateTour) VALUES (:userID, :tourID, :price, :isIndividual, :dateTour)");
+         $check = $sql->execute([":userID" => $_SESSION["ID"], ":tourID" => $_POST["ID"], ":price" => $result["Price"], ":isIndividual" => 0, ":dateTour" => $_POST["date"]]);
+         if ($check)
          {
             header("Location: tours.php");
          }

@@ -125,7 +125,7 @@ align-items: center;
                       <td><?php echo $value["isIndividual"] ? "Индивидуальный" : "Обычный" ?></td>
                       <td><?php echo $value["Price"] ?></td>
                       <td><?php echo $value["DateTour"] ?></td>
-                      <td><?php echo $status[$value["Status"]]["name"] ?></td>
+                      <td><?php echo $status[$value["Status"]]["name"] . ": " . $value["Reason"] ?></td>
                       <td><?php echo "Ссылка" ?></td>
                     </tr>
                     <?php

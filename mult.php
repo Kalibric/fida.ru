@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +13,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
    <!-- site metas -->
-   <title>Services</title>
+   <title>About</title>
    <meta name="keywords" content="">
    <meta name="description" content="">
    <meta name="author" content="">
@@ -61,74 +64,89 @@
                         <a style="color: black;" class="nav-link" href="about.html">О нас</a>
                      </li>
                      <li class="nav-item">
-                        <a style="color: black;" class="nav-link " href="avtoriz.html">Вход</a>
+                        <a style="color: black;" class="nav-link " href="indexxx.php">Вход</a>
                      </li>
                   </ul>
                </div>
             </nav>
          </div>
-
-         <header>
+         <header> 
             <nav id="main-nav">
               <div class="logo-holder">
                 <a href="#"><img style="height: 50px; width: 180px;" src="images/лог.jpg" alt="MOUNTAIN"
                 class="logo-img"></a>
               </div>
               <ul id="main-menu">
-                <li class="main-menu-item"><a href="index.html#serv"> Главная</a></li>
-                <li class="main-menu-item"><a href="serviices.html"> Туры</a></li>
+                <li class="main-menu-item"><a href="index.html"> Главная</a></li>
+                <li class="main-menu-item"><a href="services.html"> Туры</a></li>
                 <li class="main-menu-item"><a href="blog.html"> Блог</a></li>
                 <li class="main-menu-item"><a href="about.html"> О нас</a></li>
                 <!--<li class="main-menu-item"><a href="#acsi"> Контакты</a></li>-->
                 <li class="main-menu-itemm"><a href="indexxx.php"><img src="images/иконка.png"  width="35" height="35" style="vertical-align: middle;"></a></li>
-
+      
               </ul>
             </nav>
           </header>
       </div>
    </div>
    <!-- header section end -->
-   <!-- services section start -->
-   <div class="services_section layout_padding">
-      <div class="container">
-         <h1 class="services_taital">Авторские туры</h1>
-         <p class="services_text"></p>
-         <div class="services_section_2">
-            <div class="row">
-               <div class="col-md-4">
-                  <div><img src="images/altai.jpg" class="services_img"></div>
-                  <div class="btn_main"><a href="altai.php">Алтай</a></div>
-               </div>
-               <div class="col-md-4">
-                  <div><img src="images/mult.jpg" class="services_img"></div>
-                  <div class="btn_main"><a href="mult.php">Мультинские озера</a></div>
-               </div>
-               <div class="col-md-4">
-                  <div><img src="images/beluxa.png" class="services_img"></div>
-                  <div class="btn_main"><a href="beluxa.php">К подножию Белухи</a></div>
-               </div>
-               <br><br>
-               <div class="col-md-4">
-                  <div><img src="images/mnogol.png" class="services_img"></div>
-                  <div class="btn_main"><a href="mnogol.php">Байкал многоликий</a></div>
-               </div>
-               <div class="col-md-4">
-                  <div><img src="images/kamch.png" class="services_img"></div>
-                  <div class="btn_main"><a href="kamch.php">Камчатка</a></div>
-               </div>
-               <div class="col-md-4">
-                  <div><img src="images/baykal.jpg" class="services_img"></div>
-                  <div class="btn_main"><a href="baykal.php">Великий Байкал</a></div>
-               </div>
+   <!-- about section start -->
+   <div class="about_section layout_padding">
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-md-6">
+               <div class="about_taital_main">
+                  <h1 class="about_taital">Мультинские озера</h1>
+                  <p class="about_text">Наш маршрут "Мультинские озера" проходит по одному из самых загадочных мест Алтая - Усть-Коксинскому району, 
+                     имеющему такой неповторимый высокогорный рельеф.<br>Здесь вы откроете для себя множество удивительных мест. 
+                     Высоко в горах окруженные со всех сторон дикой тайгой застыли в своей первозданной красоте Мультинские озера,
+                     входящие в Катунский заповедник.<br>
+                     Свое название они получили от одноименной реки, в верховьях которой и находятся. 
+                     Мульта последовательно образует три озера: Верхнее Мультинское, Среднее Мультинское и Нижнее Мультинское. 
+                     Озера появились в результате мореной подпруды. Ледники составляют основу их питания.<br>
+                     В окрестностях озер очень много ягоды: черники, смородины, малины. 
+                     Рыбаков ждет увлекательная рыбалка на хариуса. 
+                     <br><br>
+                     <ul>Включено:
+                        <li class="item">Проживание в палатках по программе (3-, 4-местное)</li>
+                        <li class="item">Заброска продуктов (готовим самостоятельно все вместе)</li>
+                        <li class="item"> Прокат туристского снаряжения (палаток, кострового оборудования)</li>
+                        <li class="item">Услуги гидов-проводников</li>
+                        <li class="item">Транспортное обслуживание на маршруте</li>
+                    </ul>
+                    <div class="btn_main">
+                      <?php
+                      require_once "db.php";
+
+                      if (isset($_SESSION["ID"]) && getUser($conn, $_SESSION["ID"]))
+                      {
+                        ?>
+                        <a href="order.php?ID=2">Заказать</a>
+                        <?php
+                      }
+                      else
+                      {
+                        ?>
+                        <a href="indexxx.php">Зарегестрироваться или авторизоваться</a>
+                        <?php
+                      }
+                      ?>
+                    </div>
+                </p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 padding_right_0">
+               <div><img style="height: 650px; width: 700px;" src="images/mult.jpg" class="about_img"></div>
             </div>
          </div>
       </div>
    </div>
-   <!-- services section end -->
+   <!-- about section end -->
    <!-- footer section start -->
    <div class="footer_section layout_padding">
       <div class="container">
-
+       
          <div class="location_main">
             <div class="call_text"><img src="images/call-icon.png"></div>
             <div class="call_text"><a href="#">Call +7(987)137-89-75</a></div>
@@ -146,7 +164,7 @@
       </div>
    </div>
    <!-- footer section end -->
-
+   
    <!-- Javascript files-->
    <script src="js/jquery.min.js"></script>
    <script src="js/popper.min.js"></script>
