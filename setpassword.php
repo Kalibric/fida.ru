@@ -19,6 +19,29 @@ else
   header("Location: login.php");
   exit();
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST')
+{
+    if (isset($_POST["newPass"]) && isset($_POST["refreshPass"]))
+    {
+        if ($_POST["newPass"] == $_POST["refreshPass"] && strlen($_POST["newPass"]) > 5)
+        {
+            $sql = $conn->prepare("UPDATE Baza SET Password=:pass WHERE ID=:ID LIMIT 1");
+            $sql->execute([":ID" => $_SESSION["ID"], ":pass" => $_POST["newPass"]]);
+            header("Location: cabinet.php");
+        }
+        else
+        {
+            header("Location: setpassword.php");
+            exit();
+        }
+    }
+    else
+    {
+        header("Location: setpassword.php");
+        exit();
+    }
+}
 ?>
 <!DOCTYPE html>
 
@@ -57,7 +80,7 @@ else
    <link rel="stylesheet" href="css/owl.theme.default.min.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
       media="screen">
-    <script src="/js/cabinet.js"></script>
+      <script src="js/setpassword.js"></script>
 </head>
 
 <body>
@@ -89,70 +112,27 @@ else
                  echo '<img style="height:80px;width:auto;border-radius:50%;" src="images/avto.jpg">';
                 } else { echo '<img src="images/'.$image.'" style="height:80px;width:auto;border-radius:50%;">';}?>
 
-  <p> Добро пожаловать,<br> <span style="color:blue"><?php echo $user["Familia"] . ' ' . $user["Name"] . '!' ?></span> </p>
+  <p> Смена пароля </p>
   </center>
            </div>
-            <div class="col"><p><a href="logout.php"><span style="color:red;">Выйти</span> </a></p>
+            <div class="col"><p><a href="cabinet.php"><span style="color:red;">Назад</span> </a></p>
          </div>
           </div>
-          <div class="cabinetHeader">
-            <a href="cabinet.php" class="active">Личный кабинет</a>
-            <a href="tours.php">Туры</a>
-          </div>
-          <form action="setcabinet.php" method="POST" id="formInfo">
-            <table class="table">
-            <tr>
-                <th>Фамилия </th>
-                <td>
-                  <input type="text" id="LastName" name="LastName" class="form-control" value="<?php echo $user["Familia"]; ?>"></input>
-                  <span id="lastNameErr" style="color: red"></span>
-                </td>
-            </tr>
-            <tr>
-                <th>Имя</th>
-                <td>
-                  <input type="text" id="Name" name="Name" class="form-control" value="<?php echo $user["Name"]; ?>">
-                  <span id="nameErr" style="color: red"></span>
-                </td>
-            </tr>
-            <tr>
-                <th>Отчество</th>
-                <td>
-                  <input type="text" id="Patronymic" name="Patronymic" class="form-control" value="<?php echo $user["Otch"]; ?>">
-                  <span id="patrinymicErr" style="color: red"></span>
-                </td>
-            </tr>
-            <tr>
-                <th>Логин</th>
-                <td><?php echo $user["Login"]; ?></td>
-            </tr>
-        <tr>
-                <th>Статус</th>
-                <td><?php if ($user["Status"] == 1) {
-      echo "<p>Обычный пользователь</p>";
-  }
-  elseif ($user["Status"] == 5) {
-    echo "<p>Сотрудник</p>";
-    echo '<p style=" padding: 6px"><a href="toursCheck.php" >Страница сотрудника</a></p>';
-  } elseif ($user["Status"] == 10) {
-      echo "<p>Администратор</p>";
-
-      // Вывод кликабельного текста "Страница администратора"
-      echo '<p style=" padding: 6px"><a href="admin.php" >Страница администратора</a></p>';
-  } ?></td>
-            </tr>
-            </table>
-           <div class="row">
-            <div class="col-sm-2">
+          <form action="setpassword.php" method="POST" id="formPassword">
+            <div class="mb-3">
+                <label class="form-label">Новый пароль</label>
+                <input type="password" class="form-control" name="newPass">
+                <span style="color: #fa5252" id="newPassword"></span>
             </div>
-             <div class="col-sm-4">
-                <input type="submit" class="btn btn-primary" value="Редактировать">
+            <div class="mb-3">
+                <label class="form-label">Повтор нового пароля</label>
+                <input type="password" class="form-control" name="refreshPass">
+                <span style="color: #fa5252" id="refreshPassword"></span>
             </div>
-            </form>
             <div class="col-sm-6">
-         <a href="setpassword.php"><button type="button" class="btn btn-warning">Поменять пароль</button></a>
+                <input type="submit" class="btn btn-warning" value="Поменять пароль">
             </div>
-           </div>
+          </form>
         </div>
         <div class="col-sm-3">
         </div>
